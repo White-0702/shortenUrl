@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel_app
+    container_name: laravel_app
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=your_username
+      - DB_PASSWORD=your_password
+
+  db:
+    image: mariadb:10.5
+    container_name: laravel_db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_root_password
+      - MYSQL_DATABASE=laravel
+      - MYSQL_USER=your_username
+      - MYSQL_PASSWORD=your_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
